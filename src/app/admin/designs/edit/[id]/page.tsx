@@ -1,18 +1,16 @@
 //src/app/admin/designs/edit/[id]/page.tsx
 
+import { prisma } from "@/lib/prisma";
 import DesignForm from "@/components/designs/DesignForm";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminGuard from "@/components/admin/AdminGuard";
 
 async function getDesign(id: string) {
-  const res = await fetch(
-    `http://localhost:3000/api/designs/${id}`,
-    {
-      cache: "no-store",
-    }
-  );
-
-  return res.json();
+  return await prisma.design.findUnique({
+    where: {
+      id,
+    },
+  });
 }
 
 export default async function EditDesignPage({
@@ -35,7 +33,7 @@ export default async function EditDesignPage({
           </h1>
 
           <div className="bg-white p-8 rounded-3xl shadow">
-            <DesignForm initialData={design} />
+            <DesignForm initialData={design || undefined} />
           </div>
         </main>
       </div>

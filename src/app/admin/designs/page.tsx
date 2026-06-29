@@ -1,19 +1,17 @@
 //src/app/admin/designs/page.tsx
 
 import Link from "next/link";
+import { prisma } from "@/lib/prisma";
 import AdminSidebar from "@/components/admin/AdminSidebar";
 import AdminGuard from "@/components/admin/AdminGuard";
 import DesignTable from "@/components/designs/DesignTable";
 
 async function getDesigns() {
-  const res = await fetch(
-    "http://localhost:3000/api/designs",
-    {
-      cache: "no-store",
-    }
-  );
-
-  return res.json();
+  return await prisma.design.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 }
 
 export default async function DesignsPage() {
