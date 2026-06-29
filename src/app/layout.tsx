@@ -10,6 +10,7 @@ import {
 import "./globals.css";
 
 import LayoutWrapper from "@/components/common/LayoutWrapper";
+import FloatingContactButtons from "@/components/common/FloatingContactButtons";
 
 const jacquesFrancois = Jacques_Francois({
   weight: "400",
@@ -65,6 +66,7 @@ export default function RootLayout({
         <LayoutWrapper>
           {children}
         </LayoutWrapper>
+        <FloatingContactButtons />
       </body>
     </html>
   );
