@@ -5,14 +5,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { Product } from "@/types/product";
 
 interface ProductCardProps {
-  product: {
-    id: string;
-    productName: string;
-    images: string[];
-  };
-
+  product: Product;
   onQuickView: () => void;
 }
 

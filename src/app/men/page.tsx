@@ -7,17 +7,7 @@ import { useEffect, useState } from "react";
 import ProductGrid from "@/components/products/ProductGrid";
 import QuickViewModal from "@/components/products/QuickViewModal";
 import ProductTypeFilter from "@/components/products/ProductTypeFilter";
-
-interface Product {
-  id: string;
-  productName: string;
-  category: string;
-  type: string;
-  size: string;
-  description: string;
-  features: string[];
-  images: string[];
-}
+import { Product } from "@/types/product";
 
 export default function MenPage() {
   const [products, setProducts] = useState<Product[]>([]);

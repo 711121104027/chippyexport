@@ -1,3 +1,4 @@
+//src/types/design.ts
 export interface Design {
   id: string;
   designName: string;
