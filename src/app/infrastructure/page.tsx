@@ -1,4 +1,5 @@
 import InfrastructureIntro from "@/components/infrastructure/InfrastructureIntro";
+import AdminOfficeSection from "@/components/infrastructure/AdminOfficeSection";
 import CuttingSection from "@/components/infrastructure/CuttingSection";
 import AssemblySection from "@/components/infrastructure/AssemblySection";
 import QualitySection from "@/components/infrastructure/QualitySection";
@@ -9,6 +10,7 @@ export default function InfrastructurePage() {
   return (
     <main>
       <InfrastructureIntro />
+      <AdminOfficeSection />
       <CuttingSection />
       <AssemblySection />
       <QualitySection />

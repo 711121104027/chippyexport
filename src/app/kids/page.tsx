@@ -3,7 +3,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-
+import Image from "next/image";
 import ProductGrid from "@/components/products/ProductGrid";
 import QuickViewModal from "@/components/products/QuickViewModal";
 import ProductTypeFilter from "@/components/products/ProductTypeFilter";
@@ -11,42 +11,41 @@ import { Product } from "@/types/product";
 
 export default function KidsPage() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] =
-    useState<Product[]>([]);
-
-  const [selectedType, setSelectedType] =
-    useState("ALL");
-
-  const [selectedProduct, setSelectedProduct] =
-    useState<Product | null>(null);
-
-  const [isModalOpen, setIsModalOpen] =
-    useState(false);
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedType, setSelectedType] = useState("ALL");
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     fetchProducts();
   }, []);
 
   const fetchProducts = async () => {
+    setLoading(true);
     try {
-      const res = await fetch("/api/products");
+      const res = await fetch("/api/products/category/KIDS", {
+        cache: "no-store",
+      });
       const data = await res.json();
 
-      const kidsProducts = data.filter(
-        (product: Product) =>
-          product.category === "KIDS"
-      );
-
-      setProducts(kidsProducts);
-      setFilteredProducts(kidsProducts);
+      if (Array.isArray(data)) {
+        setProducts(data);
+        setFilteredProducts(data);
+      } else {
+        setProducts([]);
+        setFilteredProducts([]);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Failed to load kids products:", error);
+      setProducts([]);
+      setFilteredProducts([]);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleTypeChange = (
-    type: string
-  ) => {
+  const handleTypeChange = (type: string) => {
     setSelectedType(type);
 
     if (type === "ALL") {
@@ -54,54 +53,48 @@ export default function KidsPage() {
       return;
     }
 
-    const filtered = products.filter(
-      (product) => product.type === type
-    );
-
+    const filtered = products.filter((product) => product.type === type);
     setFilteredProducts(filtered);
   };
 
   const productTypes = [
     "ALL",
-    ...new Set(
-      products.map(
-        (product) => product.type
-      )
-    ),
+    ...Array.from(new Set(products.map((product) => product.type).filter(Boolean))),
   ];
 
-  const openQuickView = (
-    product: Product
-  ) => {
+  const [selectedColorIndex, setSelectedColorIndex] = useState(0);
+
+  const openQuickView = (product: Product, initialColorIndex: number = 0) => {
     setSelectedProduct(product);
+    setSelectedColorIndex(initialColorIndex);
     setIsModalOpen(true);
   };
 
   return (
     <>
-      <section className="relative h-[300px] md:h-[450px] lg:h-[550px] overflow-hidden">
-        <img
+      <section className="relative h-[300px] md:h-[450px] lg:h-[550px] overflow-hidden bg-neutral-900">
+        <Image
           src="/images/kids-hero.png"
           alt="Kids Banner"
-          className="w-full h-full object-cover"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
 
         <div className="absolute inset-0 bg-black/30 flex flex-col items-center justify-center text-center text-white px-4">
           <h1 className="text-4xl md:text-6xl font-[var(--font-playfair)]">
-            Kid's Wear
+            Kid&apos;s Wear
           </h1>
 
-          <p className="mt-4 max-w-2xl text-sm md:text-lg">
-            Breathable innerwear engineered
-            for comfort, flexibility and
-            performance.
+          <p className="mt-4 max-w-2xl text-sm md:text-lg text-neutral-100">
+            Breathable innerwear engineered for comfort, flexibility and performance.
           </p>
         </div>
       </section>
 
       <section className="pt-4 pb-8 md:pt-6 md:pb-12 px-4 md:px-8 lg:px-12 bg-[#FFFFFF]">
         <div className="max-w-7xl mx-auto">
-
           <ProductTypeFilter
             selectedType={selectedType}
             setSelectedType={handleTypeChange}
@@ -112,6 +105,7 @@ export default function KidsPage() {
           <ProductGrid
             products={filteredProducts}
             onQuickView={openQuickView}
+            loading={loading}
           />
         </div>
       </section>
@@ -119,9 +113,8 @@ export default function KidsPage() {
       <QuickViewModal
         product={selectedProduct}
         isOpen={isModalOpen}
-        onClose={() =>
-          setIsModalOpen(false)
-        }
+        initialColorIndex={selectedColorIndex}
+        onClose={() => setIsModalOpen(false)}
       />
     </>
   );

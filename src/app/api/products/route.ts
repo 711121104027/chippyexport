@@ -2,6 +2,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const products = await prisma.product.findMany({
@@ -25,6 +28,15 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
 
+    let formattedColors = body.colors;
+    if (typeof formattedColors === "string") {
+      try {
+        formattedColors = JSON.parse(formattedColors);
+      } catch (e) {
+        formattedColors = [];
+      }
+    }
+
     const product = await prisma.product.create({
       data: {
         productName: body.productName,
@@ -32,8 +44,9 @@ export async function POST(req: Request) {
         type: body.type,
         size: body.size,
         description: body.description,
-        features: body.features,
-        images: body.images,
+        features: body.features || [],
+        images: body.images || [],
+        colors: formattedColors || [],
       },
     });
 

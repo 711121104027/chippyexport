@@ -116,7 +116,7 @@ export default function QualitySection() {
             "
           >
             <Image
-              src="/images/infrastructure/quality-1.png"
+              src="/images/infrastructure/quality-1.jpg"
               alt="Visual Inspection"
               width={900}
               height={700}
@@ -221,7 +221,7 @@ export default function QualitySection() {
             "
           >
             <Image
-              src="/images/infrastructure/quality-2.png"
+              src="/images/infrastructure/quality-2.jpg"
               alt="Measurement Accuracy"
               width={900}
               height={700}

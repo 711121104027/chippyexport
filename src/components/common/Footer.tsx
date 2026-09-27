@@ -173,27 +173,39 @@ md:text-xs
       className="
         flex
         flex-col
-
         items-center
-
-        gap-8
-
-        md:flex-row
-        md:justify-between
+        gap-6
+        lg:flex-row
+        lg:justify-between
       "
     >
-      <p
-        className="
-          text-center
+      <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-6 text-center lg:text-left">
+        <p
+          className="
+            text-sm
+            md:text-[15px]
+            text-neutral-600
+          "
+        >
+          © 2026 Chippy Export. All Rights Reserved.
+        </p>
 
-          text-sm
-          md:text-base
-
-          text-neutral-600
-        "
-      >
-        © 2026 Chippy Export. All Rights Reserved.
-      </p>
+        <div className="flex items-center gap-4 text-xs sm:text-sm font-medium text-neutral-500">
+          <Link
+            href="/terms"
+            className="hover:text-[#8B0000] transition-colors duration-200"
+          >
+            Terms &amp; Conditions
+          </Link>
+          <span className="text-neutral-300">•</span>
+          <Link
+            href="/policy"
+            className="hover:text-[#8B0000] transition-colors duration-200"
+          >
+            Privacy Policy
+          </Link>
+        </div>
+      </div>
 
       {/* Social Icons */}
 

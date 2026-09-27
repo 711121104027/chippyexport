@@ -111,7 +111,7 @@ export default function CuttingSection() {
             <div>
               <div className="overflow-hidden rounded-[3px]">
                 <Image
-                  src="/images/infrastructure/cutting-1.png"
+                  src="/images/infrastructure/cutting-1.jpg"
                   alt="Precision Pattern Engineering"
                   width={900}
                   height={1000}
@@ -151,22 +151,22 @@ export default function CuttingSection() {
           {/* Image 2 */}
 
           <motion.div
-  initial={{ opacity: 0, x: 40 }}
-  whileInView={{ opacity: 1, x: 0 }}
-  transition={{ duration: 0.7 }}
-  viewport={{ once: true }}
-  className="
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            className="
   group
   lg:mt-12
   "
->
-  <div>
+          >
+            <div>
 
-    {/* Desktop Title - Above Image */}
+              {/* Desktop Title - Above Image */}
 
-    <div className="hidden lg:block text-center mb-5">
-      <h3
-        className="
+              <div className="hidden lg:block text-center mb-5">
+                <h3
+                  className="
         font-poppins
 
         text-[18px]
@@ -175,20 +175,20 @@ export default function CuttingSection() {
 
         text-[#C74E14]
         "
-      >
-        Artisanal Hand-Cutting Section
-      </h3>
-    </div>
+                >
+                  Artisanal Hand-Cutting Section
+                </h3>
+              </div>
 
-    {/* Image */}
+              {/* Image */}
 
-    <div className="overflow-hidden rounded-[3px]">
-      <Image
-        src="/images/infrastructure/cutting-2.png"
-        alt="Artisanal Hand-Cutting Section"
-        width={900}
-        height={1000}
-        className="
+              <div className="overflow-hidden rounded-[3px]">
+                <Image
+                  src="/images/infrastructure/cutting-2.jpg"
+                  alt="Artisanal Hand-Cutting Section"
+                  width={900}
+                  height={1000}
+                  className="
         h-auto
         w-full
 
@@ -199,14 +199,14 @@ export default function CuttingSection() {
 
         group-hover:scale-105
         "
-      />
-    </div>
+                />
+              </div>
 
-    {/* Mobile Title - Below Image */}
+              {/* Mobile Title - Below Image */}
 
-    <div className="block lg:hidden text-center mt-3">
-      <h3
-        className="
+              <div className="block lg:hidden text-center mt-3">
+                <h3
+                  className="
         font-poppins
 
         text-[12px]
@@ -215,13 +215,13 @@ export default function CuttingSection() {
 
         text-[#C74E14]
         "
-      >
-        Artisanal Hand-Cutting Section
-      </h3>
-    </div>
+                >
+                  Artisanal Hand-Cutting Section
+                </h3>
+              </div>
 
-  </div>
-</motion.div>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

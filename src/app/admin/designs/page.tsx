@@ -7,11 +7,16 @@ import AdminGuard from "@/components/admin/AdminGuard";
 import DesignTable from "@/components/designs/DesignTable";
 
 async function getDesigns() {
-  return await prisma.design.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
+  try {
+    return await prisma.design.findMany({
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  } catch (error) {
+    console.error("Failed to fetch admin designs:", error);
+    return [];
+  }
 }
 
 export default async function DesignsPage() {

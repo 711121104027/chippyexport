@@ -256,7 +256,7 @@ export default function LogisticsSection() {
                 "
               >
                 <Image
-                  src="/images/infrastructure/logistics-2.png"
+                  src="/images/infrastructure/logistics-2.jpg"
                   alt="Export Logistics"
                   width={700}
                   height={850}

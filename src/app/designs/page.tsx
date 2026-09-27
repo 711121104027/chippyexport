@@ -28,6 +28,7 @@ export default function DesignsPage() {
   }, []);
 
   async function fetchDesigns() {
+    setLoading(true);
     try {
       const res = await fetch(
         "/api/designs"
@@ -35,9 +36,14 @@ export default function DesignsPage() {
 
       const data = await res.json();
 
-      setDesigns(data);
+      if (Array.isArray(data)) {
+        setDesigns(data);
+      } else {
+        setDesigns([]);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Failed to load designs:", error);
+      setDesigns([]);
     } finally {
       setLoading(false);
     }

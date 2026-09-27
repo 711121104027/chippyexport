@@ -164,7 +164,7 @@ export default function AssemblySection() {
               "
             >
               <Image
-                src="/images/infrastructure/assembly-1.png"
+                src="/images/infrastructure/assembly-1.jpg"
                 alt="Assembly Process"
                 width={800}
                 height={1000}
