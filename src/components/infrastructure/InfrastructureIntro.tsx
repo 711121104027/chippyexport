@@ -33,7 +33,7 @@ export default function InfrastructureIntro() {
               our commitment to excellence.
             </p>
 
-            {/* Facility Image */}
+            {/* Main Entrance Image */}
             <motion.div
               initial={{ opacity: 0, x: -40 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -41,28 +41,6 @@ export default function InfrastructureIntro() {
               viewport={{ once: true }}
               className="mt-6"
             >
-              <div className="overflow-hidden rounded-[3px]">
-                <Image
-                  src="/images/infrastructure/facility.jpeg"
-                  alt="The Facility"
-                  width={800}
-                  height={600}
-                  className="h-auto w-full object-cover transition-transform duration-700 hover:scale-105"
-                />
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Right Content */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="lg:pt-10"
-          >
-            <div>
-              {/* Main Entrance Image */}
               <div className="overflow-hidden rounded-[3px]">
                 <Image
                   src="/images/infrastructure/entrance.png"
@@ -80,7 +58,7 @@ export default function InfrastructureIntro() {
                 </h3>
               </div>
 
-              {/* The Facility Content (Placed below main entrance image and text) */}
+              {/* The Facility Content (Placed below Main Entrance & Logistics Hub text) */}
               <div className="mt-6 pt-4 border-t border-neutral-100">
                 <h3 className="font-poppins text-2xl sm:text-3xl font-bold text-[#1E293B]">
                   The Facility
@@ -92,6 +70,28 @@ export default function InfrastructureIntro() {
                   The architecture reflects our philosophy of organized,
                   spacious and process-driven production.
                 </p>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Right Content */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true }}
+            className="lg:pt-10"
+          >
+            <div>
+              {/* Facility Image */}
+              <div className="overflow-hidden rounded-[3px]">
+                <Image
+                  src="/images/infrastructure/facility.jpeg"
+                  alt="The Facility"
+                  width={800}
+                  height={600}
+                  className="h-auto w-full object-cover transition-transform duration-700 hover:scale-105"
+                />
               </div>
             </div>
           </motion.div>
