@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Product, parseProductColors, ColorVariant } from "@/types/product";
+import { Product } from "@/types/product";
 
 interface ProductCardProps {
   product: Product;
@@ -15,14 +15,6 @@ export default function ProductCard({
   onQuickView,
 }: ProductCardProps) {
   const [hovered, setHovered] = useState(false);
-  const [selectedColorIndex, setSelectedColorIndex] = useState(0);
-
-  const rawColors = parseProductColors(product.colors);
-  const colors: ColorVariant[] = rawColors;
-  const hasColors = colors.length > 0;
-  const activeColor = hasColors
-    ? colors[selectedColorIndex] || colors[0]
-    : null;
 
   const productImages =
     Array.isArray(product.images) && product.images.length > 0
@@ -57,30 +49,30 @@ export default function ProductCard({
         flex-col
       "
     >
-        {/* Image Section */}
-        <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
-          <Image
-            key={`card-img-${hovered ? 'hover' : 'main'}-${hovered ? secondImage : firstImage}`}
-            src={hovered ? secondImage : firstImage}
-            alt={product.productName || "Product"}
-            fill
-            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-            className="
-              object-cover
-              transition-all
-              duration-500
-              group-hover:scale-105
-            "
-          />
+      {/* Image Section */}
+      <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
+        <Image
+          key={`card-img-${hovered ? 'hover' : 'main'}-${hovered ? secondImage : firstImage}`}
+          src={hovered ? secondImage : firstImage}
+          alt={product.productName || "Product"}
+          fill
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          className="
+            object-cover
+            transition-all
+            duration-500
+            group-hover:scale-105
+          "
+        />
 
-          {/* Gender Badge (e.g. for Kids) */}
-          {product.gender && (
-            <div className="absolute top-2 left-2 z-10 pointer-events-none">
-              <span className="bg-[#7A1C1C]/90 backdrop-blur-sm text-white text-[10px] sm:text-[11px] font-medium px-2 py-0.5 rounded-md shadow-sm">
-                {product.gender}
-              </span>
-            </div>
-          )}
+        {/* Gender Badge (e.g. for Kids) */}
+        {product.gender && (
+          <div className="absolute top-2 left-2 z-10 pointer-events-none">
+            <span className="bg-[#7A1C1C]/90 backdrop-blur-sm text-white text-[10px] sm:text-[11px] font-medium px-2 py-0.5 rounded-md shadow-sm">
+              {product.gender}
+            </span>
+          </div>
+        )}
 
         {/* Desktop Quick View */}
         <div
@@ -98,7 +90,7 @@ export default function ProductCard({
           "
         >
           <button
-            onClick={() => onQuickView(selectedColorIndex)}
+            onClick={() => onQuickView(0)}
             className="
               bg-white
               text-[#7A1C1C]
@@ -110,6 +102,7 @@ export default function ProductCard({
               hover:text-white
               transition
               shadow-lg
+              cursor-pointer
             "
           >
             Quick View
@@ -119,59 +112,29 @@ export default function ProductCard({
 
       {/* Product Content */}
       <div className="p-3 text-center flex-1 flex flex-col justify-between">
-        {/* Color Swatches */}
-        {hasColors && (
-          <div className="flex items-center justify-center gap-1.5 mb-2 flex-wrap min-h-[20px]">
-            {colors.map((color, idx) => (
-              <button
-                key={idx}
-                type="button"
-                title={color.name || `Color ${idx + 1}`}
-                onMouseEnter={() => setSelectedColorIndex(idx)}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setSelectedColorIndex(idx);
-                }}
-                className={`
-                  w-4 h-4 rounded-full border transition-all cursor-pointer
-                  ${
-                    selectedColorIndex === idx
-                      ? "ring-2 ring-[#7A1C1C] ring-offset-1 scale-120 border-neutral-400 shadow-sm"
-                      : "border-neutral-300 hover:scale-110 opacity-75 hover:opacity-100"
-                  }
-                `}
-                style={{
-                  backgroundColor: color.hex || "#333333",
-                }}
-              />
-            ))}
-          </div>
-        )}
-
-        {/* Product Name */}
+        {/* Product Name Only */}
         <h3
           className="
             text-sm
             md:text-base
             font-medium
             font-[var(--font-poppins)]
+            text-neutral-900
             transition-colors
             duration-300
             group-hover:text-[#7A1C1C]
             line-clamp-2
             min-h-[40px]
+            flex
+            items-center
+            justify-center
           "
         >
           {product.productName}
-          {activeColor?.name && activeColor.name !== "Default" ? (
-            <span className="block text-xs font-normal text-neutral-500 mt-0.5">
-              {activeColor.name}
-            </span>
-          ) : null}
         </h3>
 
         <button
-          onClick={() => onQuickView(selectedColorIndex)}
+          onClick={() => onQuickView(0)}
           className="
             md:hidden
             mt-3
@@ -188,6 +151,7 @@ export default function ProductCard({
             shadow-sm
             transition-all
             duration-300
+            cursor-pointer
           "
         >
           Quick View
@@ -195,4 +159,4 @@ export default function ProductCard({
       </div>
     </motion.div>
   );
-}
+}
