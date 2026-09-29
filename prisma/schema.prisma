@@ -20,6 +20,8 @@ model Product {
 
   category    Category
 
+  gender      String?
+
   type        String
 
   size        String

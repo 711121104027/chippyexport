@@ -119,6 +119,7 @@ export async function PUT(
       data: {
         productName: body.productName,
         category: body.category,
+        gender: body.gender || null,
         type: body.type,
         size: body.size,
         description: body.description,

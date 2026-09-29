@@ -3,8 +3,10 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import FeatureInput from "./FeatureInput";
 import ColorVariantManager from "./ColorVariantManager";
+import ImageUploader from "./ImageUploader";
 import { ColorVariant, parseProductColors } from "@/types/product";
 
 interface ProductFormProps {
@@ -16,6 +18,7 @@ export default function ProductForm({
   initialData,
   productId,
 }: ProductFormProps) {
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const [productName, setProductName] = useState(
@@ -24,6 +27,10 @@ export default function ProductForm({
 
   const [category, setCategory] = useState(
     initialData?.category || "MEN"
+  );
+
+  const [gender, setGender] = useState(
+    initialData?.gender || "Boys"
   );
 
   const [type, setType] = useState(initialData?.type || "");
@@ -38,24 +45,23 @@ export default function ProductForm({
     initialData?.features || []
   );
 
-  // Initialize colors: from initialData.colors, or fallback from initialData.images
+  // Common product images
+  const [images, setImages] = useState<string[]>(() => {
+    if (initialData?.images && Array.isArray(initialData.images) && initialData.images.length > 0) {
+      return initialData.images;
+    }
+    // Fallback if legacy images existed inside colors
+    const parsedColors = parseProductColors(initialData?.colors);
+    const colorImgs = parsedColors.flatMap((c) => c.images || []);
+    if (colorImgs.length > 0) return colorImgs;
+
+    return [];
+  });
+
+  // Colors (swatches / names)
   const [colors, setColors] = useState<ColorVariant[]>(() => {
     const existing = parseProductColors(initialData?.colors);
     if (existing.length > 0) return existing;
-
-    if (
-      initialData?.images &&
-      Array.isArray(initialData.images) &&
-      initialData.images.length > 0
-    ) {
-      return [
-        {
-          name: "Standard",
-          hex: "#111827",
-          images: initialData.images,
-        },
-      ];
-    }
     return [];
   });
 
@@ -65,11 +71,8 @@ export default function ProductForm({
     try {
       setLoading(true);
 
-      // Collect all images from color variants
-      const effectiveImages = colors.flatMap((c) => c.images || []);
-
-      if (colors.length === 0 || effectiveImages.length === 0) {
-        alert("Please add at least one color variant with product photos.");
+      if (images.length === 0) {
+        alert("Please upload at least one product photo.");
         setLoading(false);
         return;
       }
@@ -84,11 +87,12 @@ export default function ProductForm({
           body: JSON.stringify({
             productName,
             category,
+            gender: category === "KIDS" ? gender : null,
             type,
             size,
             description,
             features,
-            images: effectiveImages,
+            images,
             colors,
           }),
         }
@@ -104,15 +108,8 @@ export default function ProductForm({
           : "Product Added Successfully!"
       );
 
-      if (!productId) {
-        setProductName("");
-        setCategory("MEN");
-        setType("");
-        setSize("");
-        setDescription("");
-        setFeatures([]);
-        setColors([]);
-      }
+      router.push("/admin/product");
+      router.refresh();
     } catch (error) {
       console.error(error);
       alert("Failed to save product");
@@ -136,19 +133,41 @@ export default function ProductForm({
         />
       </div>
 
-      <div>
-        <label className="block mb-2 font-medium text-neutral-800">
-          Category
-        </label>
-        <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
-          className="w-full border border-neutral-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7A1C1C]/20 focus:border-[#7A1C1C]"
-        >
-          <option value="MEN">Men</option>
-          <option value="WOMEN">Women</option>
-          <option value="KIDS">Kids</option>
-        </select>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block mb-2 font-medium text-neutral-800">
+            Category
+          </label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+            className="w-full border border-neutral-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7A1C1C]/20 focus:border-[#7A1C1C]"
+          >
+            <option value="MEN">Men</option>
+            <option value="WOMEN">Women</option>
+            <option value="KIDS">Kids</option>
+          </select>
+        </div>
+
+        {/* Gender Selection - ONLY for Kids category */}
+        {category === "KIDS" && (
+          <div>
+            <label className="block mb-2 font-medium text-neutral-800">
+              Kids Gender
+            </label>
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              className="w-full border border-neutral-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7A1C1C]/20 focus:border-[#7A1C1C] bg-[#FAF7F2]"
+            >
+              <option value="Boys">Boys</option>
+              <option value="Girls">Girls</option>
+              <option value="Unisex">Unisex</option>
+              <option value="Toddler Boys">Toddler Boys</option>
+              <option value="Toddler Girls">Toddler Girls</option>
+            </select>
+          </div>
+        )}
       </div>
 
       <div>
@@ -170,7 +189,7 @@ export default function ProductForm({
         <input
           value={size}
           onChange={(e) => setSize(e.target.value)}
-          placeholder="e.g. S, M, L, XL, XXL"
+          placeholder="e.g. S, M, L, XL, XXL (or 2-4 Yrs, 4-6 Yrs)"
           className="w-full border border-neutral-300 rounded-xl p-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#7A1C1C]/20 focus:border-[#7A1C1C]"
         />
       </div>
@@ -190,7 +209,17 @@ export default function ProductForm({
 
       <FeatureInput features={features} setFeatures={setFeatures} />
 
-      {/* Single Color Variant & Photo Manager Section */}
+      {/* Common Product Images Upload */}
+      <div className="pt-4 border-t border-neutral-200">
+        <ImageUploader
+          imageUrls={images}
+          setImageUrls={setImages}
+          label="Product Photos (Common Image Upload)"
+          multiple={true}
+        />
+      </div>
+
+      {/* Color Variants & Picker Manager */}
       <ColorVariantManager colors={colors} setColors={setColors} />
 
       <button
@@ -207,6 +236,7 @@ export default function ProductForm({
           transition
           shadow-md
           disabled:opacity-50
+          cursor-pointer
         "
       >
         {loading
@@ -217,4 +247,4 @@ export default function ProductForm({
       </button>
     </form>
   );
-}
+}

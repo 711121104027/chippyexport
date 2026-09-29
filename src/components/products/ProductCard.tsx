@@ -18,35 +18,21 @@ export default function ProductCard({
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
 
   const rawColors = parseProductColors(product.colors);
-  const colors: ColorVariant[] =
-    rawColors.length > 0
-      ? rawColors
-      : Array.isArray(product.images) && product.images.length > 0
-      ? [
-          {
-            name: product.type || "Default",
-            hex: "#1E3A8A",
-            images: product.images,
-          },
-        ]
-      : [];
-
+  const colors: ColorVariant[] = rawColors;
   const hasColors = colors.length > 0;
   const activeColor = hasColors
     ? colors[selectedColorIndex] || colors[0]
     : null;
 
-  const colorImages =
-    activeColor?.images && activeColor.images.length > 0
-      ? activeColor.images
-      : Array.isArray(product.images)
+  const productImages =
+    Array.isArray(product.images) && product.images.length > 0
       ? product.images
       : [];
 
   const firstImage =
-    colorImages.length > 0 ? colorImages[0] : "/images/logo.png";
+    productImages.length > 0 ? productImages[0] : "/images/logo.png";
   const secondImage =
-    colorImages.length > 1 ? colorImages[1] : firstImage;
+    productImages.length > 1 ? productImages[1] : firstImage;
 
   return (
     <motion.div
@@ -71,21 +57,30 @@ export default function ProductCard({
         flex-col
       "
     >
-      {/* Image Section */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
-        <Image
-          key={`card-img-${selectedColorIndex}-${hovered ? 'hover' : 'main'}-${hovered ? secondImage : firstImage}`}
-          src={hovered ? secondImage : firstImage}
-          alt={product.productName || "Product"}
-          fill
-          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="
-            object-cover
-            transition-all
-            duration-500
-            group-hover:scale-105
-          "
-        />
+        {/* Image Section */}
+        <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
+          <Image
+            key={`card-img-${hovered ? 'hover' : 'main'}-${hovered ? secondImage : firstImage}`}
+            src={hovered ? secondImage : firstImage}
+            alt={product.productName || "Product"}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="
+              object-cover
+              transition-all
+              duration-500
+              group-hover:scale-105
+            "
+          />
+
+          {/* Gender Badge (e.g. for Kids) */}
+          {product.gender && (
+            <div className="absolute top-2 left-2 z-10 pointer-events-none">
+              <span className="bg-[#7A1C1C]/90 backdrop-blur-sm text-white text-[10px] sm:text-[11px] font-medium px-2 py-0.5 rounded-md shadow-sm">
+                {product.gender}
+              </span>
+            </div>
+          )}
 
         {/* Desktop Quick View */}
         <div

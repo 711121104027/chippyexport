@@ -9,10 +9,13 @@ import QuickViewModal from "@/components/products/QuickViewModal";
 import ProductTypeFilter from "@/components/products/ProductTypeFilter";
 import { Product } from "@/types/product";
 
+const DEFAULT_GENDERS = ["ALL", "Boys", "Girls", "Unisex"];
+
 export default function KidsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedGender, setSelectedGender] = useState("ALL");
   const [selectedType, setSelectedType] = useState("ALL");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -45,17 +48,39 @@ export default function KidsPage() {
     }
   };
 
-  const handleTypeChange = (type: string) => {
-    setSelectedType(type);
+  const applyFilters = (gender: string, type: string) => {
+    let result = products;
 
-    if (type === "ALL") {
-      setFilteredProducts(products);
-      return;
+    if (gender !== "ALL") {
+      result = result.filter(
+        (p) => (p.gender || "").toLowerCase() === gender.toLowerCase()
+      );
     }
 
-    const filtered = products.filter((product) => product.type === type);
-    setFilteredProducts(filtered);
+    if (type !== "ALL") {
+      result = result.filter((p) => p.type === type);
+    }
+
+    setFilteredProducts(result);
   };
+
+  const handleGenderChange = (gender: string) => {
+    setSelectedGender(gender);
+    applyFilters(gender, selectedType);
+  };
+
+  const handleTypeChange = (type: string) => {
+    setSelectedType(type);
+    applyFilters(selectedGender, type);
+  };
+
+  // Extract unique gender list if custom ones exist
+  const dynamicGenders = Array.from(
+    new Set([
+      ...DEFAULT_GENDERS,
+      ...products.map((p) => p.gender).filter(Boolean) as string[],
+    ])
+  );
 
   const productTypes = [
     "ALL",
@@ -93,14 +118,49 @@ export default function KidsPage() {
         </div>
       </section>
 
-      <section className="pt-4 pb-8 md:pt-6 md:pb-12 px-4 md:px-8 lg:px-12 bg-[#FFFFFF]">
+      <section className="pt-6 pb-8 md:pt-8 md:pb-12 px-4 md:px-8 lg:px-12 bg-[#FFFFFF]">
         <div className="max-w-7xl mx-auto">
-          <ProductTypeFilter
-            selectedType={selectedType}
-            setSelectedType={handleTypeChange}
-            productTypes={productTypes}
-            label="Select Kid's Type"
-          />
+          {/* Filters Bar: Gender Tabs on Left / Type Selector on Right */}
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 md:mb-8 border-b border-neutral-100 pb-4">
+            {/* Gender Section */}
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-bold uppercase tracking-wider text-neutral-500 mr-1">
+                Gender:
+              </span>
+              {dynamicGenders.map((gender) => {
+                const isSelected = selectedGender.toLowerCase() === gender.toLowerCase();
+                return (
+                  <button
+                    key={gender}
+                    type="button"
+                    onClick={() => handleGenderChange(gender)}
+                    className={`
+                      px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer
+                      ${
+                        isSelected
+                          ? "bg-[#7A1C1C] text-white shadow-md scale-105"
+                          : "bg-neutral-100 text-neutral-700 hover:bg-neutral-200 hover:text-black"
+                      }
+                    `}
+                  >
+                    {gender === "ALL" ? "All Kids" : gender}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Type Filter */}
+            {productTypes.length > 1 && (
+              <div className="w-full md:w-auto">
+                <ProductTypeFilter
+                  selectedType={selectedType}
+                  setSelectedType={handleTypeChange}
+                  productTypes={productTypes}
+                  label="Select Kid's Type"
+                />
+              </div>
+            )}
+          </div>
 
           <ProductGrid
             products={filteredProducts}
@@ -118,4 +178,4 @@ export default function KidsPage() {
       />
     </>
   );
-}
+}

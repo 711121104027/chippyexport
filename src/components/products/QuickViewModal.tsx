@@ -28,30 +28,16 @@ export default function QuickViewModal({
   }, [product, initialColorIndex]);
 
   const rawColors = parseProductColors(product?.colors);
-  const colors: ColorVariant[] =
-    rawColors.length > 0
-      ? rawColors
-      : Array.isArray(product?.images) && product!.images.length > 0
-      ? [
-          {
-            name: product?.type || "Standard",
-            hex: "#1E3A8A",
-            images: product!.images,
-          },
-        ]
-      : [];
-
+  const colors: ColorVariant[] = rawColors;
   const hasColors = colors.length > 0;
 
   const activeColor = hasColors
     ? colors[selectedColorIndex] || colors[0]
     : null;
 
-  // Determine images to show: active color images if available, otherwise product images
+  // Display product's common images
   const displayImages: string[] =
-    activeColor?.images && activeColor.images.length > 0
-      ? activeColor.images
-      : Array.isArray(product?.images) && product!.images.length > 0
+    Array.isArray(product?.images) && product!.images.length > 0
       ? product!.images
       : ["/images/logo.png"];
 
@@ -102,6 +88,7 @@ export default function QuickViewModal({
                 p-2 sm:p-2.5
                 transition-all
                 z-10
+                cursor-pointer
               "
               aria-label="Close modal"
             >
@@ -111,16 +98,10 @@ export default function QuickViewModal({
             <div className="grid lg:grid-cols-12 gap-6 lg:gap-10 items-start">
               {/* Left Column: Product Images (2x2 Grid) */}
               <div className="lg:col-span-6">
-                <motion.div
-                  key={`images-grid-${selectedColorIndex}-${activeColor?.name || "default"}`}
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.25 }}
-                  className="grid grid-cols-2 gap-3 sm:gap-4"
-                >
+                <div className="grid grid-cols-2 gap-3 sm:gap-4">
                   {displayImages.slice(0, 4).map((image: string, index: number) => (
                     <div
-                      key={`img-frame-${selectedColorIndex}-${index}-${image}`}
+                      key={`img-frame-${index}-${image}`}
                       className="
                         relative
                         aspect-[3/4]
@@ -132,16 +113,16 @@ export default function QuickViewModal({
                       "
                     >
                       <Image
-                        key={`img-${selectedColorIndex}-${index}-${image}`}
+                        key={`img-${index}-${image}`}
                         src={image}
-                        alt={`${product.productName} - ${activeColor?.name || "View"} ${index + 1}`}
+                        alt={`${product.productName} - View ${index + 1}`}
                         fill
                         sizes="(max-width: 768px) 45vw, 240px"
                         className="object-cover hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                   ))}
-                </motion.div>
+                </div>
 
                 {displayImages.length === 0 && (
                   <div className="aspect-square bg-neutral-100 rounded-2xl flex items-center justify-center text-neutral-400">
@@ -181,7 +162,17 @@ export default function QuickViewModal({
                     </div>
                   )}
 
-                  {/* 5. Colors with Color Circle */}
+                  {/* 5. Gender (Placed directly below Size for Kids) */}
+                  {(product.gender || product.category === "KIDS") && (
+                    <div className="mt-2 text-sm text-neutral-700">
+                      <strong className="text-neutral-900 font-semibold">Gender:</strong>{" "}
+                      <span className="text-neutral-600">
+                        {product.gender || "Girls"}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* 6. Colors with Color Circle */}
                   {hasColors && (
                     <div className="mt-4 pt-3 border-t border-neutral-100">
                       <div className="flex items-center gap-2 mb-2.5">
@@ -203,7 +194,6 @@ export default function QuickViewModal({
                               key={idx}
                               type="button"
                               title={color.name || `Color ${idx + 1}`}
-                              onMouseEnter={() => setSelectedColorIndex(idx)}
                               onClick={() => setSelectedColorIndex(idx)}
                               className={`
                                 relative w-7 h-7 rounded-full border transition-all flex items-center justify-center cursor-pointer

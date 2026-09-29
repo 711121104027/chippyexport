@@ -1,13 +1,14 @@
 export interface ColorVariant {
   name: string;
   hex?: string;
-  images: string[];
+  images?: string[];
 }
 
 export interface Product {
   id: string;
   productName: string;
   category: string;
+  gender?: string | null;
   type: string;
   size: string;
   description: string;

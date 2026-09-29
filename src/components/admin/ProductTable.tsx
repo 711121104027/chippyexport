@@ -75,8 +75,8 @@ export default function ProductTable() {
             {products.map((product) => {
               const colorList = parseProductColors(product.colors);
               const primaryImg =
+                (Array.isArray(product.images) && product.images[0]) ||
                 colorList[0]?.images?.[0] ||
-                product.images?.[0] ||
                 "/images/logo.png";
 
               return (
@@ -101,9 +101,16 @@ export default function ProductTable() {
                   </td>
 
                   <td className="p-4">
-                    <span className="bg-[#7A1C1C]/10 text-[#7A1C1C] text-xs font-semibold px-2.5 py-1 rounded-full">
-                      {product.category}
-                    </span>
+                    <div className="flex flex-col gap-1 items-start">
+                      <span className="bg-[#7A1C1C]/10 text-[#7A1C1C] text-xs font-semibold px-2.5 py-1 rounded-full">
+                        {product.category}
+                      </span>
+                      {product.gender && (
+                        <span className="bg-sky-50 text-sky-700 text-[10px] font-medium px-2 py-0.5 rounded-full">
+                          {product.gender}
+                        </span>
+                      )}
+                    </div>
                   </td>
 
                   <td className="p-4">
