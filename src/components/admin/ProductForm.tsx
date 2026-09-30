@@ -162,7 +162,6 @@ export default function ProductForm({
             >
               <option value="Boys">Boys</option>
               <option value="Girls">Girls</option>
-              <option value="Unisex">Unisex</option>
               <option value="Toddler Boys">Toddler Boys</option>
               <option value="Toddler Girls">Toddler Girls</option>
             </select>

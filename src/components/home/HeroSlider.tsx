@@ -19,11 +19,10 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const heroImages = [
-  "/images/hero/hero-1.png",
-  "/images/hero/hero-2.png",
-  "/images/hero/hero-3.png",
-  "/images/hero/hero-4.png",
-  "/images/hero/hero-5.png",
+  "/images/hero/hero-1.png?v=2",
+  "/images/hero/hero-2.png?v=2",
+  "/images/hero/hero-3.png?v=2",
+  "/images/hero/hero-4.png?v=2",
 ];
 
 export default function HeroSlider() {
@@ -156,6 +155,7 @@ export default function HeroSlider() {
                 alt={`Hero ${index + 1}`}
                 fill
                 priority={index === 0}
+                unoptimized
                 sizes="100vw"
                 className="
                 object-cover

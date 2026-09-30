@@ -9,17 +9,20 @@ import { motion } from "framer-motion";
 const categories = [
   {
     title: "Men",
-    image: "/images/categories/mens.png",
+    image:
+      "https://res.cloudinary.com/dtbel6lke/image/upload/v1790662061/usoyd121rjubuhpq60eg.jpg",
     href: "/men",
   },
   {
     title: "Women",
-    image: "/images/categories/womens.png",
+    image:
+      "https://res.cloudinary.com/dtbel6lke/image/upload/v1790699016/q04qa4aaeolhpb83q68t.jpg",
     href: "/women",
   },
   {
     title: "Kids",
-    image: "/images/categories/kids.png",
+    image:
+      "https://res.cloudinary.com/dtbel6lke/image/upload/v1790753088/ishtorgkrkofgcv5nvds.png",
     href: "/kids",
   },
 ];
@@ -94,6 +97,8 @@ export default function ProductCategories() {
                       src={category.image}
                       alt={category.title}
                       fill
+                      unoptimized
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="
                       object-cover
 

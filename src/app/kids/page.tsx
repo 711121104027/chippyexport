@@ -9,7 +9,7 @@ import QuickViewModal from "@/components/products/QuickViewModal";
 import ProductTypeFilter from "@/components/products/ProductTypeFilter";
 import { Product } from "@/types/product";
 
-const DEFAULT_GENDERS = ["ALL", "Boys", "Girls", "Unisex"];
+const DEFAULT_GENDERS = ["ALL", "Boys", "Girls"];
 
 function shuffleArray<T>(array: T[]): T[] {
   const shuffled = [...array];
