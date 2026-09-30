@@ -51,7 +51,7 @@ export default function FloatingContactButtons() {
               whileTap={{ scale: 0.95 }}
             >
               <Link
-                href="tel:+919876543210"
+                href="tel:+919778202150"
                 className="
                   w-12 h-12
                   rounded-full
@@ -62,6 +62,7 @@ export default function FloatingContactButtons() {
                   hover:shadow-[0_12px_30px_rgba(139,30,30,0.45)]
                   transition-all duration-300
                 "
+                aria-label="Call +91 9778202150"
               >
                 <span className="flex items-center justify-center">
                   <FiPhoneCall size={22} />
@@ -82,8 +83,9 @@ export default function FloatingContactButtons() {
               whileTap={{ scale: 0.95 }}
             >
               <Link
-                href="https://wa.me/919876543210"
+                href="https://wa.me/919778202150"
                 target="_blank"
+                rel="noopener noreferrer"
                 className="
                   w-12 h-12
                   rounded-full
@@ -94,6 +96,7 @@ export default function FloatingContactButtons() {
                   hover:shadow-[0_12px_30px_rgba(37,211,102,0.45)]
                   transition-all duration-300
                 "
+                aria-label="Chat on WhatsApp +91 9778202150"
               >
                 <span className="flex items-center justify-center">
                   <FaWhatsapp size={26} />

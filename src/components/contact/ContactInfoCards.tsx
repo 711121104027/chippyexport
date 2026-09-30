@@ -20,13 +20,16 @@ const cards = [
         icon: Building2,
         title: "Office Number",
         subtitle: "For business & official inquiries",
-        details: ["0476-2630374"],
+        details: [
+            "+91 9778202150",
+            "0476-2630374",
+        ],
     },
     {
         icon: Mail,
         title: "Email Address",
         subtitle: "We reply as soon as possible",
-        details: ["riyas@chippyexports.com"],
+        details: ["Chippyexports33@gmail.com"],
     },
 ];
 

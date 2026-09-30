@@ -212,7 +212,9 @@ md:text-xs
       <div className="flex items-center gap-4">
 
         <a
-          href="#"
+          href="https://wa.me/919778202150"
+          target="_blank"
+          rel="noopener noreferrer"
           aria-label="WhatsApp"
           className="
             flex

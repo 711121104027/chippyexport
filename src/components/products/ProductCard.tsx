@@ -133,6 +133,7 @@ export default function ProductCard({
           {product.productName}
         </h3>
 
+        {/* Mobile Quick View Button */}
         <button
           onClick={() => onQuickView(0)}
           className="
@@ -159,4 +160,4 @@ export default function ProductCard({
       </div>
     </motion.div>
   );
-}
+}
