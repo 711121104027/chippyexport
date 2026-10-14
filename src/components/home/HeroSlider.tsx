@@ -23,6 +23,7 @@ const heroImages = [
   "/images/hero/hero-2.png?v=2",
   "/images/hero/hero-3.png?v=2",
   "/images/hero/hero-4.png?v=2",
+  "/images/hero/hero-5.png?v=2",
 ];
 
 export default function HeroSlider() {
@@ -125,7 +126,7 @@ export default function HeroSlider() {
         loop={true}
         speed={900}
         autoplay={{
-          delay: 5000,
+          delay: 8000,
           disableOnInteraction: false,
         }}
         navigation={{
