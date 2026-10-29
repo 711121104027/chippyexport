@@ -23,19 +23,44 @@ body {
 
 
 .hero-swiper .swiper-pagination {
-  bottom: 24px !important;
+  bottom: 8px !important;
+}
+
+@media (min-width: 640px) {
+  .hero-swiper .swiper-pagination {
+    bottom: 16px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-swiper .swiper-pagination {
+    bottom: 24px !important;
+  }
 }
 
 .hero-swiper .swiper-pagination-bullet {
-  width: 8px;
-  height: 8px;
-  background: rgba(255, 255, 255, 0.5);
+  width: 6px;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.6);
   opacity: 1;
   border-radius: 999px;
   transition: all 0.35s ease;
 }
 
+@media (min-width: 640px) {
+  .hero-swiper .swiper-pagination-bullet {
+    width: 8px;
+    height: 8px;
+  }
+}
+
 .hero-swiper .swiper-pagination-bullet-active {
-  width: 36px;
+  width: 20px;
   background: #fff;
+}
+
+@media (min-width: 640px) {
+  .hero-swiper .swiper-pagination-bullet-active {
+    width: 36px;
+  }
 }

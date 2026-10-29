@@ -143,12 +143,8 @@ export default function HeroSlider() {
             <div
               className="
               relative
-
-              h-[38vh]
-              sm:h-[45vh]
-              md:h-[60vh]
-              lg:h-[78vh]
-              xl:h-[88vh]
+              w-full
+              aspect-[1828/860]
               "
             >
               <Image
